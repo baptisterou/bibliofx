@@ -184,4 +184,6 @@ Remise à zéro: vous pouvez supprimer `~/.bibliofx.json` pour repartir d’un �
   - Export/Import (JSON/CSV).
   - Champs supplémentaires (éditeur, ISBN), et filtres avancés (auteur, année).
   - Tests unitaires pour le mapping des catégories, la persistance, et les filtres.
+  - Ajout de comptes "Emprunteurs"
+  - Gestion des emprunts de livres id emprunteur
 (Bibliofx v1)
