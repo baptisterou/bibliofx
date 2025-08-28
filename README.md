@@ -184,4 +184,4 @@ Remise à zéro: vous pouvez supprimer `~/.bibliofx.json` pour repartir d’un �
   - Export/Import (JSON/CSV).
   - Champs supplémentaires (éditeur, ISBN), et filtres avancés (auteur, année).
   - Tests unitaires pour le mapping des catégories, la persistance, et les filtres.
->>>>>>> 1fdb5d9 (Bibliofx v1)
+(Bibliofx v1)
