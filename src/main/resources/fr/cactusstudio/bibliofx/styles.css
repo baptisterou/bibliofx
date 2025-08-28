@@ -1,0 +1,161 @@
+/* Modern light high-contrast theme for BiblioFX */
+
+/* JavaFX CSS uses looked-up colors and -fx- properties */
+.root {
+    /* Light palette with strong contrast */
+    -fx-color-bg: #f7f8fb;                 /* page background */
+    -fx-color-surface: #ffffff;            /* surfaces/inputs */
+    -fx-color-card: #ffffff;               /* cards/panels */
+    -fx-color-muted: #5a6b7d;              /* secondary text */
+    -fx-color-text: #0b1220;               /* primary text */
+    -fx-color-primary: #2563eb;            /* blue-600 */
+    -fx-color-primary-strong: #1d4ed8;     /* blue-700 */
+    -fx-color-border: #d6deea;             /* subtle border */
+    -fx-radius: 10px;
+    -fx-shadow: dropshadow(gaussian, rgba(17, 24, 39, 0.10), 16, 0, 0, 4);
+
+    -fx-font-family: "Inter UI", "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: linear-gradient(to bottom, -fx-color-bg, -fx-color-bg);
+    -fx-text-fill: -fx-color-text;
+}
+
+/* Containers */
+.border-pane, .vbox, .hbox {
+    -fx-background-color: transparent;
+}
+
+.card {
+    -fx-background-color: -fx-color-card;
+    -fx-background-radius: 10px;
+    -fx-padding: 14px;
+    -fx-effect: -fx-shadow;
+    -fx-border-color: -fx-color-border;
+    -fx-border-radius: 10px;
+}
+
+.header {
+    -fx-background-color: linear-gradient(to bottom, #eef2ff, -fx-color-surface);
+    -fx-padding: 10px 12px;
+    -fx-border-color: -fx-color-border;
+    -fx-border-width: 0 0 1 0;
+}
+
+.label {
+    -fx-text-fill: -fx-color-text;
+}
+.label.header-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+}
+.label.muted {
+    -fx-text-fill: -fx-color-muted;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: -fx-color-surface;
+    -fx-text-fill: -fx-color-text;
+    -fx-padding: 8 14 8 14;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-color-border;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+    -fx-effect: null;
+}
+.button:hover { -fx-background-color: #f0f4fa; }
+.button:armed { -fx-background-color: #e6edf6; }
+
+.button.primary {
+    -fx-background-color: -fx-color-primary;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+.button.primary:hover { -fx-background-color: -fx-color-primary-strong; }
+
+/* Inputs */
+.text-field, .text-area, .combo-box-base, .check-box .box {
+    -fx-background-color: -fx-color-surface;
+    -fx-text-fill: -fx-color-text;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-color-border;
+    -fx-border-radius: 8px;
+}
+.text-field, .text-area { -fx-padding: 8 10 8 10; }
+.text-area .content { -fx-background-color: transparent; }
+
+.combo-box-base:hover, .text-field:hover { -fx-background-color: #f5f7fb; }
+.combo-box-base:armed { -fx-background-color: #eef3fb; }
+
+/* CheckBox visual states */
+.check-box .box {
+    -fx-min-width: 18px;
+    -fx-min-height: 18px;
+    -fx-padding: 0.1em; /* space for mark */
+}
+.check-box:selected .box {
+    -fx-background-color: -fx-color-primary;
+    -fx-border-color: -fx-color-primary;
+}
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+.check-box .mark {
+    /* Ensure unchecked checkbox appears empty (no tick/mark) */
+    -fx-background-color: transparent;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: #e1e8f2;
+    -fx-padding: 8px;
+}
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #f3f6ff, #e9efff);
+    -fx-background-radius: 8 8 0 0;
+    -fx-border-color: -fx-color-border;
+    -fx-border-width: 0 0 1 0;
+}
+.table-view .column-header, .table-view .filler {
+    -fx-size: 36px;
+    -fx-background-color: transparent;
+}
+.table-view .table-row-cell {
+    -fx-background-color: transparent;
+}
+.table-view .table-row-cell:odd {
+    -fx-background-color: rgba(13, 23, 39, 0.03);
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: rgba(37, 99, 235, 0.18);
+}
+.table-view .table-cell {
+    -fx-text-fill: -fx-color-text;
+    -fx-padding: 10 8 10 8;
+}
+
+.separator *.line { -fx-background-color: -fx-color-border; }
+
+/* Dialogs */
+.dialog-pane {
+    -fx-background-color: -fx-color-card;
+    -fx-border-color: -fx-color-border;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.dialog-pane .button { -fx-background-color: -fx-color-surface; }
+
+/* Spacing helpers */
+.gap-8 { -fx-padding: 8; }
+.gap-12 { -fx-padding: 12; }
+.gap-16 { -fx-padding: 16; }
+
+/* Book detail panel */
+#bookDetail { /* fx:id on include becomes id on root of included */
+}
+
+/* Header HBox in hello-view */
+#topBar {
+    -fx-spacing: 10;
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fr.cactusstudio.bibliofx.BookDetailController" spacing="6.0" styleClass="card">
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+    <children>
+        <Label text="Détails du livre" styleClass="header-title"/>
+        <HBox spacing="10">
+            <children>
+                <ImageView fx:id="coverImageView" fitWidth="120" fitHeight="180" preserveRatio="true" smooth="true"/>
+                <VBox spacing="6.0">
+                    <children>
+                        <Label fx:id="titleLabel" text="Titre: -"/>
+                        <Label fx:id="authorLabel" text="Auteur: -"/>
+                        <Label fx:id="yearLabel" text="Année: -"/>
+                        <Label fx:id="genreLabel" text="Genre: -"/>
+                        <Label fx:id="availableLabel" text="Disponibilité: -"/>
+                        <Label fx:id="addedAtLabel" text="Ajouté le: -"/>
+                        <Label fx:id="borrowedAtLabel" text="Prêté le: -"/>
+                        <Label fx:id="readingStatusLabel" text="Statut de lecture: -"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <Label text="Résumé" style="-fx-font-weight: bold; -fx-padding: 6 0 0 0;"/>
+        <TextArea fx:id="summaryArea" editable="false" wrapText="true" promptText="Aucun résumé" VBox.vgrow="ALWAYS"/>
+    </children>
+</VBox>
