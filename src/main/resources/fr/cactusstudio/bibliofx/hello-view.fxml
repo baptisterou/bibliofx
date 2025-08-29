@@ -40,9 +40,9 @@
                 <TableColumn fx:id="authorCol" text="Auteur" prefWidth="160"/>
                 <TableColumn fx:id="yearCol" text="Année" prefWidth="80"/>
                 <TableColumn fx:id="genreCol" text="Genre" prefWidth="120"/>
-                <TableColumn fx:id="availableCol" text="Disponibilité" prefWidth="240"/>
-                <TableColumn fx:id="readingStatusCol" text="Lecture" prefWidth="180"/>
-                <TableColumn fx:id="addedCol" text="Ajouté le" prefWidth="150"/>
+                <TableColumn fx:id="availableCol" text="Disponibilité" prefWidth="240" sortable="true"/>
+                <TableColumn fx:id="readingStatusCol" text="Lecture" prefWidth="180" sortable="true"/>
+                <TableColumn fx:id="addedCol" text="Ajouté le" prefWidth="150" sortable="true"/>
             </columns>
         </TableView>
     </center>

@@ -4,6 +4,7 @@ import fr.cactusstudio.bibliofx.model.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -51,6 +52,7 @@ public class Controller {
 
     private final ObservableList<Book> master = FXCollections.observableArrayList();
     private FilteredList<Book> filtered;
+    private SortedList<Book> sorted;
     private final LibraryRepository repository = new LibraryRepository();
     private String currentLibrary;
 
@@ -84,8 +86,34 @@ public class Controller {
         yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
         genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
         availableCol.setCellValueFactory(new PropertyValueFactory<>("available"));
+        // Comparateurs explicites pour un tri cohérent
+        titleCol.setComparator(Comparator.nullsLast(String::compareToIgnoreCase));
+        authorCol.setComparator(Comparator.nullsLast(String::compareToIgnoreCase));
+        genreCol.setComparator(Comparator.nullsLast(String::compareToIgnoreCase));
+        yearCol.setComparator(Comparator.nullsLast(Integer::compareTo));
+        availableCol.setComparator(Comparator.nullsLast(Boolean::compareTo)); // false < true
         if (readingStatusCol != null) {
             readingStatusCol.setCellValueFactory(new PropertyValueFactory<>("readingStatus"));
+            // Ordre personnalisé: Non lu < En cours de lecture < Lu
+            readingStatusCol.setComparator((a, b) -> {
+                String sa = (a == null || a.isBlank()) ? "Non lu" : a;
+                String sb = (b == null || b.isBlank()) ? "Non lu" : b;
+                int ra = switch (sa.toLowerCase()) {
+                    case "non lu" -> 0;
+                    case "en cours de lecture" -> 1;
+                    case "lu" -> 2;
+                    default -> 3; // valeurs inconnues à la fin
+                };
+                int rb = switch (sb.toLowerCase()) {
+                    case "non lu" -> 0;
+                    case "en cours de lecture" -> 1;
+                    case "lu" -> 2;
+                    default -> 3;
+                };
+                int cmp = Integer.compare(ra, rb);
+                if (cmp != 0) return cmp;
+                return sa.compareToIgnoreCase(sb);
+            });
         }
         if (addedCol != null) {
             addedCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
@@ -125,7 +153,10 @@ public class Controller {
 
         // Filters
         filtered = new FilteredList<>(master, b -> true);
-        table.setItems(filtered);
+        // Wrap filtered list in a SortedList for column sorting support
+        sorted = new SortedList<>(filtered);
+        sorted.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sorted);
 
         searchField.textProperty().addListener((obs, o, n) -> applyFilters());
         availableFilter.selectedProperty().addListener((obs, o, n) -> applyFilters());
@@ -148,6 +179,18 @@ public class Controller {
         // Sort table by title initially
         table.getSortOrder().add(titleCol);
         titleCol.setSortType(TableColumn.SortType.ASCENDING);
+
+        // Ouvre edit au double click
+        table.setRowFactory(tv -> {
+            TableRow<Book> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    table.getSelectionModel().select(row.getIndex());
+                    onEdit();
+                }
+            });
+            return row;
+        });
     }
 
     /** Récupère les genres présents dans les données et alimente le filtre Genre. */
