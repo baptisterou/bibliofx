@@ -33,6 +33,7 @@ import java.util.function.Predicate;
  * multi-bibliothèques via {@link LibraryRepository}.
  */
 public class Controller {
+    private static final String DATA_FILE = "books.ser";
     @FXML private TextField searchField;
     @FXML private ComboBox<String> genreFilter;
     @FXML private CheckBox availableFilter;
@@ -47,7 +48,7 @@ public class Controller {
     @FXML private TableColumn<Book, String> readingStatusCol;
     @FXML private TableColumn<Book, String> addedCol;
 
-    // Included controller for book.fxml
+    // Controlleur pour book.fxml
     @FXML private BookDetailController bookDetailController; // populated via fx:include + fx:id convention
 
     private final ObservableList<Book> master = FXCollections.observableArrayList();
@@ -62,6 +63,8 @@ public class Controller {
      */
     @FXML
     private void initialize() {
+        // Try to load from binary serialization first
+        List<Book> serLoaded = loadSer();
         // Libraries UI
         currentLibrary = repository.getCurrentLibrary();
         libraryCombo.setItems(FXCollections.observableArrayList(repository.listLibraries()));
@@ -69,7 +72,7 @@ public class Controller {
         libraryCombo.valueProperty().addListener((obs, oldName, newName) -> onSwitchLibrary(oldName, newName));
 
 
-        List<Book> loaded = repository.load(currentLibrary);
+        List<Book> loaded = (serLoaded != null && !serLoaded.isEmpty()) ? serLoaded : repository.load(currentLibrary);
 
         long nowInit = System.currentTimeMillis();
         for (Book b : loaded) {
@@ -235,6 +238,7 @@ public class Controller {
             master.add(created);
             refreshGenreFilterItems();
             repository.save(master);
+            saveSer();
         }
     }
 
@@ -264,6 +268,7 @@ public class Controller {
             if (bookDetailController != null) bookDetailController.setBook(selected);
             refreshGenreFilterItems();
             repository.save(master);
+            saveSer();
         }
     }
 
@@ -276,18 +281,25 @@ public class Controller {
         if (bookDetailController != null) bookDetailController.setBook(null);
         refreshGenreFilterItems();
         repository.save(master);
+        saveSer();
     }
 
     /** Force une sauvegarde immédiate de la bibliothèque courante. */
     @FXML
     private void onSave() {
         repository.save(master);
+        saveSer();
     }
 
     /** Recharge les données de la bibliothèque courante depuis le stockage. */
     @FXML
     private void onLoad() {
-        master.setAll(repository.load());
+        List<Book> fromSer = loadSer();
+        if (fromSer != null && !fromSer.isEmpty()) {
+            master.setAll(fromSer);
+        } else {
+            master.setAll(repository.load());
+        }
         refreshGenreFilterItems();
         applyFilters();
     }
@@ -341,6 +353,7 @@ public class Controller {
         currentLibrary = newName;
         repository.setCurrentLibrary(newName);
         master.setAll(loaded);
+        saveSer();
         if (bookDetailController != null) bookDetailController.setBook(null);
         refreshGenreFilterItems();
         resetFilters();
@@ -426,9 +439,36 @@ public class Controller {
             libraryCombo.setItems(FXCollections.observableArrayList(repository.listLibraries()));
             libraryCombo.getSelectionModel().select(currentLibrary);
             master.setAll(repository.load(currentLibrary));
+            saveSer();
             if (bookDetailController != null) bookDetailController.setBook(null);
             refreshGenreFilterItems();
             resetFilters();
+        }
+    }
+
+    // --- Sérialisation binaire simple sur books.ser ---
+    private List<Book> loadSer() {
+        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream(DATA_FILE))) {
+            Object obj = ois.readObject();
+            if (obj instanceof java.util.List<?> list) {
+                @SuppressWarnings("unchecked")
+                List<Book> casted = (List<Book>) list;
+                return casted;
+            }
+        } catch (java.io.FileNotFoundException e) {
+            // No serialized file yet -> ignore
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void saveSer() {
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream(DATA_FILE))) {
+            oos.writeObject(new java.util.ArrayList<>(master));
+            oos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

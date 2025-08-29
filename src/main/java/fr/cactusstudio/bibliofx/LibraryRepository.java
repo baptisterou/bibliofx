@@ -22,10 +22,23 @@ import java.util.*;
 public class LibraryRepository {
     /** Fichier de données JSON dans le répertoire utilisateur. */
     private final File dataFile;
-    /** Instance Gson configurée en pretty printing. */
+    /** Instance Gson configurée (compact pour de meilleures perfs). */
     private final Gson gson;
 
     private static final String DEFAULT_LIBRARY = "Bibliothèque";
+
+    // Cache mémoire des données pour éviter les relectures disque à chaque appel
+    private volatile Data cached;
+    private final Object lock = new Object();
+
+    // Ecriture différée (debounce)
+    private final java.util.concurrent.ScheduledExecutorService scheduler = java.util.concurrent.Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread t = new Thread(r, "bibliofx-repo-writer");
+        t.setDaemon(true);
+        return t;
+    });
+    private java.util.concurrent.ScheduledFuture<?> pendingWrite;
+    private static final long DEBOUNCE_MS = 300;
 
     private static final Type BOOK_LIST_TYPE = new TypeToken<List<Book>>(){}.getType();
 
@@ -37,8 +50,10 @@ public class LibraryRepository {
         // Sur Windows, le répertoire utilisateur est valide, mais le fichier peut ne pas exister.
         // Utiliser un nom de fichier distinct pour éviter les problèmes de nom réservé et s'assurer de la création.
         this.dataFile = new File(home, ".bibliofx.json");
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = new GsonBuilder().create();
         ensureInitialized();
+        // Charger une fois en cache
+        this.cached = readDataFromDisk();
     }
 
     // Modèle persistant en JSON
@@ -95,10 +110,18 @@ public class LibraryRepository {
      * Lit l'ensemble des données du fichier JSON.
      * @return l'objet Data désérialisé
      */
-    private Data readData() {
+    // Lecture brute depuis le disque (utilisée pour l'init/recache)
+    private Data readDataFromDisk() {
         ensureInitialized();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dataFile), StandardCharsets.UTF_8))) {
-            return gson.fromJson(br, Data.class);
+            Data d = gson.fromJson(br, Data.class);
+            if (d == null) {
+                d = new Data();
+                d.current = DEFAULT_LIBRARY;
+                d.libraries = new LinkedHashMap<>();
+                d.libraries.put(DEFAULT_LIBRARY, new ArrayList<>());
+            }
+            return d;
         } catch (IOException e) {
             e.printStackTrace();
             Data d = new Data();
@@ -109,14 +132,56 @@ public class LibraryRepository {
         }
     }
 
+    // Accès au modèle en cache
+    private Data readData() {
+        Data d = cached;
+        if (d == null) {
+            synchronized (lock) {
+                if (cached == null) cached = readDataFromDisk();
+                d = cached;
+            }
+        }
+        return d;
+    }
+
     /**
      * Écrit l'objet Data dans le fichier JSON.
      * @param d données à persister
      */
     private void writeData(Data d) {
-        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dataFile, false), StandardCharsets.UTF_8))) {
-            gson.toJson(d, bw);
+        // Met à jour le cache et programme une écriture différée
+        synchronized (lock) {
+            this.cached = d;
+            if (pendingWrite != null) {
+                pendingWrite.cancel(false);
+            }
+            pendingWrite = scheduler.schedule(this::flushToDiskSafely, DEBOUNCE_MS, java.util.concurrent.TimeUnit.MILLISECONDS);
+        }
+    }
+
+    /** Force l'écriture immédiate sur disque (utilisé rarement). */
+    private void flushToDiskSafely() {
+        Data snapshot;
+        synchronized (lock) {
+            snapshot = this.cached;
+        }
+        if (snapshot == null) return;
+        // Ecriture atomique via fichier temporaire
+        File tmp = new File(dataFile.getParentFile() != null ? dataFile.getParentFile() : new File("."), dataFile.getName() + ".tmp");
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tmp, false), StandardCharsets.UTF_8))) {
+            gson.toJson(snapshot, bw);
             bw.flush();
+            // sur certains OS, renameTo est atomique quand même volume
+            if (!tmp.renameTo(dataFile)) {
+                // fallback: copie par flux
+                try (InputStream in = new FileInputStream(tmp); OutputStream out = new FileOutputStream(dataFile, false)) {
+                    in.transferTo(out);
+                    out.flush();
+                }
+                // supprimer tmp
+                //noinspection ResultOfMethodCallIgnored
+                tmp.delete();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,7 @@
 package fr.cactusstudio.bibliofx.model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -13,7 +15,7 @@ import java.util.Objects;
  * ainsi que des métadonnées facultatives (résumé, couverture) et des horodatages
  * d'ajout et d'emprunt.
  */
-public class Book {
+public class Book implements Serializable {
     /** Titre du livre. */
     private String title;
     /** Auteur du livre. */
@@ -39,6 +41,9 @@ public class Book {
     private Long addedAt;     // epoch millis
     /** Date d'emprunt en millisecondes epoch, null si non emprunté. */
     private Long borrowedAt;  // epoch millis, null when not borrowed
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /** Constructeur sans argument (requis pour la sérialisation). */
     public Book() {

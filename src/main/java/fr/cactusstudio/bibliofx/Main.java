@@ -24,9 +24,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+        Scene scene = new Scene(fxmlLoader.load());
         // Applique la feuille de style globale
         scene.getStylesheets().add(Objects.requireNonNull(Main.class.getResource("styles.css")).toExternalForm());
+        stage.setMaximized(true);
         stage.setTitle("BiblioFX - Gestion de Bibliothèque");
         stage.setScene(scene);
         stage.show();

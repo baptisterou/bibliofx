@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bda3c402-4958-4e68-8efc-88e80a91ad9c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fr/cactusstudio/bibliofx/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fr/cactusstudio/bibliofx/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/LibraryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/LibraryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/model/Book.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +160,7 @@
       <updated>1756318447579</updated>
       <workItem from="1756318448558" duration="20576000" />
       <workItem from="1756391751351" duration="1944000" />
-      <workItem from="1756449732525" duration="631000" />
+      <workItem from="1756449732525" duration="4480000" />
     </task>
     <servers />
   </component>
