@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bda3c402-4958-4e68-8efc-88e80a91ad9c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/LibraryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/LibraryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/cactusstudio/bibliofx/model/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +77,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -91,29 +89,7 @@
       <command value="./ gradlew build" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.bibliofx [run]">
-    <configuration name="bibliofx [makeInstaller]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="makeInstaller" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager">
     <configuration name="bibliofx [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -139,7 +115,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.bibliofx [run]" />
-        <item itemvalue="Gradle.bibliofx [makeInstaller]" />
       </list>
     </recent_temporary>
   </component>
@@ -160,7 +135,8 @@
       <updated>1756318447579</updated>
       <workItem from="1756318448558" duration="20576000" />
       <workItem from="1756391751351" duration="1944000" />
-      <workItem from="1756449732525" duration="4480000" />
+      <workItem from="1756449732525" duration="5525000" />
+      <workItem from="1756456084670" duration="5943000" />
     </task>
     <servers />
   </component>

@@ -87,17 +87,28 @@ Prérequis: rien de spécifique si vous utilisez le wrapper Gradle. Une connexio
   - `./gradlew run`
 - Lancer sur Windows:
   - `gradlew.bat run`
-- Construire une image exécutable (jlink):
+
+### Obtenir un exécutable tout prêt (recommandé)
+- Générer une image portable (toutes dépendances + runtime Java inclus) pour votre OS:
+  - `./gradlew makePortable` (Linux/macOS) ou `gradlew.bat makePortable` (Windows)
+  - Résultat: `build/distributions/app-<classifier>.zip` (classifier dépend de l’OS/arch)
+  - Utilisation: dézippez, puis lancez le script dans `bin/`:
+    - Linux/macOS: `bin/BiblioFX`
+    - Windows: `bin/BiblioFX.bat`
+
+### Alternative (commandes directes)
+- Construire l’image portable sans alias:
   - `./gradlew jlinkZip`
-  - Archive générée: `build/distributions/app-<classifier>.zip` (classifier selon OS/arch OpenJFX).
-  - Dézipper puis lancer `bin/BiblioFX` (ou `bin/BiblioFX.exe` sous Windows si image jpackage).
-- Générer un installateur Windows (.exe) avec jpackage (Windows uniquement):
-  - Pré-requis: JDK 17+ avec jpackage disponible dans le PATH. (WiX n’est pas nécessaire pour .exe, uniquement pour .msi.)
-  - Commande rapide (alias): `gradlew makeInstaller`
-  - Alternative directe: `gradlew jpackage`
-  - Portable (app image): `gradlew jpackageImage` → ouvreur: `build/jpackage/BiblioFX/bin/BiblioFX.exe`.
-  - Installateur .exe généré: `build/jpackage/BiblioFX-setup-<version>.exe` (ex: `BiblioFX-setup-1.0-SNAPSHOT.exe`).
-  - Options: un raccourci et une entrée de menu Démarrer sont générés via `--win-shortcut` et `--win-menu`.
+- Construire l’image dézippée (pour tester localement):
+  - `./gradlew makeImage` → lanceur dans `build/image/bin/BiblioFX`
+
+### Installateur Windows (.exe) via jpackage (Windows uniquement)
+- Pré-requis: JDK 17+ avec jpackage disponible dans le PATH. (WiX non requis pour .exe, uniquement pour .msi.)
+- Commande rapide (alias): `gradlew makeInstaller`
+- Alternative directe: `gradlew jpackage`
+- Portable (app image jpackage): `gradlew jpackageImage` → ouvreur: `build/jpackage/BiblioFX/bin/BiblioFX.exe`.
+- Installateur .exe généré: `build/jpackage/BiblioFX-setup-<version>.exe` (ex: `BiblioFX-setup-1.0-SNAPSHOT.exe`).
+- Options: un raccourci et une entrée de menu Démarrer sont générés via `--win-shortcut` et `--win-menu`.
 
 Notes:
 - Le plugin OpenJFX gère les modules JavaFX au runtime, `application` définit `mainModule` et `mainClass`.

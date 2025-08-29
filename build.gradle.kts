@@ -47,7 +47,7 @@ tasks.withType<Test> {
 }
 
 jlink {
-    imageZip.set(layout.buildDirectory.file("/distributions/app-${javafx.platform.classifier}.zip"))
+    imageZip.set(layout.buildDirectory.file("distributions/app-${javafx.platform.classifier}.zip"))
     options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
     launcher {
         name = "BiblioFX"
@@ -74,4 +74,18 @@ tasks.register("makeInstaller") {
     group = "distribution"
     description = "Build the native installer using jpackage (Windows .exe)."
     dependsOn("jpackage")
+}
+
+// Convenience task to create a portable, ready-to-run image (ZIP with runtime and launchers)
+tasks.register("makePortable") {
+    group = "distribution"
+    description = "Build a portable ZIP containing a custom Java runtime and launch scripts (via jlink)."
+    dependsOn("jlinkZip")
+}
+
+// Optional: create the unzipped image in build/image (useful for local run without unzipping)
+tasks.register("makeImage") {
+    group = "distribution"
+    description = "Build the custom runtime image (unzipped) with launch scripts in build/image (via jlink)."
+    dependsOn("jlink")
 }
